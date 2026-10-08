@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { DESCRIPTION, NAME, SITE, TITLE } from "./site";
 
 const sans = localFont({
   src: [
@@ -14,17 +15,29 @@ const sans = localFont({
 
 const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const description =
-  "OC International is the parent company of OC Global Technology Sdn. Bhd., the Malaysian technology company powering digital growth through conversation, commerce and community platforms.";
-
 export const metadata: Metadata = {
-  title: "OC International — Parent company of OC Global Technology",
-  description,
+  metadataBase: new URL(SITE),
+  title: TITLE,
+  description: DESCRIPTION,
+  applicationName: "OC International",
+  authors: [{ name: NAME, url: SITE }],
+  creator: NAME,
+  publisher: NAME,
+  category: "Technology",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "OC International",
-    description,
     type: "website",
+    url: "/",
     siteName: "OC International",
+    title: TITLE,
+    description: DESCRIPTION,
+    locale: "en_MY",
+  },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
 };
 

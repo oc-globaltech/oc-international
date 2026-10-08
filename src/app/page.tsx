@@ -3,7 +3,9 @@ import Globe from "./components/Globe";
 import Rail from "./components/Rail";
 import Menu from "./components/Menu";
 import Clock from "./components/Clock";
+import OC3D from "./components/OC3D";
 import { OC_PATH, OC_VIEWBOX } from "./components/oc-mark";
+import { DESCRIPTION, NAME, SITE } from "./site";
 
 // All facts below come from www.ocglobaltech.com. OC International is presented only as its parent company.
 const OCGT = "https://www.ocglobaltech.com";
@@ -163,9 +165,85 @@ function External({ href, children, className }: { href: string; children: React
   );
 }
 
+// Structured data for search engines and AI answer engines (schema.org)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE}/#organization`,
+      name: NAME,
+      legalName: NAME,
+      alternateName: ["OC International", "OC International Holding"],
+      url: SITE,
+      logo: `${SITE}/images/ocih-logo.svg`,
+      description: DESCRIPTION,
+      subOrganization: { "@id": `${OCGT}/#organization` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${OCGT}/#organization`,
+      name: "OC Global Technology Sdn. Bhd.",
+      alternateName: "OCGT",
+      url: OCGT,
+      logo: `${SITE}/images/ocgt-logo.webp`,
+      slogan: "Powering Digital Growth.",
+      description:
+        "Malaysian technology company and Malaysia Digital (MD) status company building conversation, commerce and community platforms. A subsidiary of OC International Holding Sdn. Bhd.",
+      parentOrganization: { "@id": `${SITE}/#organization` },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Unit 09-04, Level 9, City Plaza, Jalan Tebrau",
+        addressLocality: "Johor Bahru",
+        postalCode: "80300",
+        addressRegion: "Johor",
+        addressCountry: "MY",
+      },
+      telephone: "+6072831973",
+      email: "info@ocglobaltech.com",
+      contactPoint: { "@type": "ContactPoint", contactType: "customer service", telephone: "+6072831973", email: "info@ocglobaltech.com" },
+      sameAs: ["https://www.linkedin.com/company/oc-global-technology-sdn-bhd"],
+      brand: platforms.map((p) => ({ "@type": "Brand", name: p.name, slogan: p.tag, description: p.desc })),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE}/#website`,
+      url: SITE,
+      name: "OC International",
+      description: DESCRIPTION,
+      inLanguage: "en",
+      publisher: { "@id": `${SITE}/#organization` },
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+      {/* ---------- Launch screen ---------- */}
+      <div className="intro" aria-hidden>
+        <div className="intro-panel">
+          <div className="intro-content">
+            <svg viewBox={OC_VIEWBOX} className="intro-mark w-[clamp(140px,22vw,260px)] overflow-visible">
+              <path d={OC_PATH} pathLength={1} fillRule="evenodd" />
+            </svg>
+            <div className="wrap absolute inset-x-0 bottom-0 pb-[clamp(24px,4vw,48px)]">
+              <div className="t-label flex items-end justify-between gap-6 text-bone/60">
+                <p>
+                  OC International
+                  <br />
+                  Holding Sdn. Bhd.
+                </p>
+                <p className="intro-count text-[clamp(40px,7vw,96px)] leading-none font-medium tracking-[-0.04em] text-bone" />
+              </div>
+              <div className="mt-5 h-px bg-bone/15">
+                <div className="intro-bar h-full bg-gold" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-bone">
         Skip to content
       </a>
@@ -173,9 +251,8 @@ export default function Home() {
       {/* ---------- Navigation ---------- */}
       <header className="nav">
         <div className="wrap flex h-[72px] items-center justify-between gap-6">
-          <a href="#top" className="flex items-center gap-2 text-[19px] font-medium tracking-tight" aria-label="OC International, back to top">
-            <Mark className="h-[21px] w-auto text-gold" />
-            International
+          <a href="#top" className="shrink-0" aria-label="OC International Holding, back to top">
+            <Image src="/images/ocih-logo.svg" alt="" width={408} height={249} priority className="h-[52px] w-auto" />
           </a>
           <nav aria-label="Primary" className="hidden lg:block">
             <ul className="flex gap-7">
@@ -210,10 +287,12 @@ export default function Home() {
             </p>
           </div>
           <h1 className="text-[clamp(64px,15.5vw,224px)] leading-[0.86] font-medium tracking-[-0.055em]">
-            <span className="hero-line">
-              <span className="flex" style={{ "--i": 0 } as React.CSSProperties}>
-                <span className="sr-only">OC </span>
-                <Mark className="mb-[0.02em] h-[0.7em] w-auto text-gold" />
+            <span className="fade-in block" style={{ "--d": "80ms" } as React.CSSProperties}>
+              <span className="sr-only">OC </span>
+              <span className="relative mb-[0.04em] block h-[0.7em] w-[1.735em]">
+                <OC3D>
+                  <Mark className="h-full w-full text-gold" />
+                </OC3D>
               </span>
             </span>
             <span className="hero-line">
@@ -624,13 +703,6 @@ export default function Home() {
           <div className="flex flex-col justify-between gap-4 text-base text-muted sm:flex-row">
             <div>
               <p>© 2026 OC International Holding Sdn. Bhd. Parent company of OC Global Technology Sdn. Bhd.</p>
-              <p className="mt-1 text-sm">
-                3D renders on{" "}
-                <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer" className="underline decoration-mist underline-offset-2 hover:decoration-ink">
-                  Unsplash
-                </a>{" "}
-                by 灿雄 邱, BoliviaInteligente and Dzo.
-              </p>
             </div>
             <a href="#top" className="nav-link self-start text-muted">
               Back to top ↑

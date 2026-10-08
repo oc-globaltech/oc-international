@@ -7,7 +7,8 @@ FROM node:26-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_TELEMETRY_DISABLED=1
+ARG SITE_URL
+ENV NEXT_TELEMETRY_DISABLED=1 SITE_URL=$SITE_URL
 RUN npm run build
 
 FROM node:26-alpine AS runner

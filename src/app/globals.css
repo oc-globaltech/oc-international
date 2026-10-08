@@ -280,6 +280,87 @@ button:hover > .dot svg {
   color: var(--color-ink);
 }
 
+/* ---------- Launch screen (CSS only: gold curtain behind an ink curtain) ---------- */
+:root {
+  --intro: 1.6s; /* hero entrance waits for the curtains */
+}
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  background: var(--color-gold);
+  animation: intro-up 0.9s var(--ease-out-expo) 1.48s forwards;
+}
+.intro-panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--color-ink);
+  color: var(--color-bone);
+  animation: intro-up 0.9s var(--ease-out-expo) 1.35s forwards;
+}
+.intro-content {
+  display: contents;
+}
+.intro-content > * {
+  animation: intro-out 0.4s ease-in 1.2s forwards;
+}
+.intro-mark path {
+  fill: var(--color-gold);
+  fill-opacity: 0;
+  stroke: var(--color-gold);
+  stroke-width: 2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation:
+    intro-draw 0.85s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards,
+    intro-fill 0.45s ease-out 0.7s forwards;
+}
+.intro-count::after {
+  counter-reset: n var(--n);
+  content: counter(n, decimal-leading-zero);
+  animation: intro-count 1.15s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.intro-bar {
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: intro-bar 1.15s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+@keyframes intro-up {
+  to {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+@keyframes intro-out {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes intro-fill {
+  to {
+    fill-opacity: 1;
+  }
+}
+@keyframes intro-count {
+  to {
+    --n: 100;
+  }
+}
+@keyframes intro-bar {
+  to {
+    transform: scaleX(1);
+  }
+}
+
 /* ---------- Hero ---------- */
 .hero-line {
   display: block;
@@ -290,7 +371,7 @@ button:hover > .dot svg {
 .hero-line > span {
   display: inline-block;
   animation: rise 1.2s var(--ease-out-expo) both;
-  animation-delay: calc(var(--i, 0) * 90ms + 100ms);
+  animation-delay: calc(var(--i, 0) * 90ms + 100ms + var(--intro));
 }
 @keyframes rise {
   from {
@@ -299,7 +380,7 @@ button:hover > .dot svg {
 }
 .fade-in {
   animation: fade 1.2s var(--ease-out-expo) both;
-  animation-delay: var(--d, 500ms);
+  animation-delay: calc(var(--d, 500ms) + var(--intro));
 }
 @keyframes fade {
   from {
@@ -513,4 +594,16 @@ button:hover > .dot svg {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+  .intro {
+    display: none;
+  }
+  :root {
+    --intro: 0s;
+  }
+}
+
+@property --n {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
 }
