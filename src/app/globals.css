@@ -1,0 +1,516 @@
+@import "tailwindcss";
+
+/* Swiss blueprint system, gold as the single accent. Light-only by design. */
+@theme {
+  --color-bone: #fcfbf8;
+  --color-ink: #0e0d0b;
+  --color-smoke: #24221d;
+  --color-muted: #5b574d;
+  --color-ash: #efede7;
+  --color-mist: #d4d0c5;
+  --color-gold: #c9a24a;
+  --color-gold-deep: #8a6a1f;
+  --color-gold-wash: #f4ead2;
+
+  --font-sans: var(--font-general), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-card: 20px;
+  --radius-btn: 24px;
+  --radius-pill: 48px;
+  --radius-badge: 8px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --page: 1200px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --section: clamp(96px, 12vw, 160px);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  font-feature-settings: "ss02", "ss08";
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold-deep);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@layer components {
+/* ---------- Layout primitives ---------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--page) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section);
+}
+
+/* ---------- Type ---------- */
+.t-display {
+  font-weight: 500;
+  font-size: clamp(52px, 9.4vw, 136px);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+}
+.t-h1 {
+  font-weight: 500;
+  font-size: clamp(40px, 6.2vw, 88px);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+.t-h2 {
+  font-weight: 500;
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.t-h3 {
+  font-weight: 500;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+}
+.t-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.t-body {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-smoke);
+}
+.t-small {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+/* Gold marker under a phrase */
+.mark {
+  background-image: linear-gradient(var(--color-gold), var(--color-gold));
+  background-repeat: no-repeat;
+  background-size: 100% 0.065em;
+  background-position: 0 88%;
+}
+
+/* ---------- Buttons ---------- */
+.btn-gold,
+.btn-ink,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition:
+    background-color 0.3s var(--ease-out-expo),
+    color 0.3s var(--ease-out-expo),
+    border-color 0.3s var(--ease-out-expo);
+}
+.btn-gold {
+  background: var(--color-gold);
+  color: var(--color-ink);
+  padding: 10px 22px;
+}
+.btn-gold:hover {
+  background: var(--color-ink);
+  color: var(--color-bone);
+}
+.btn-ink {
+  background: var(--color-ink);
+  color: var(--color-bone);
+  padding: 6px 22px 6px 6px;
+}
+.btn-ink .dot {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+.btn-ink:hover .dot {
+  background: var(--color-gold);
+}
+.btn-ghost {
+  border: 1px solid currentColor;
+  padding: 6px 22px 6px 6px;
+}
+.btn-ghost .dot {
+  background: currentColor;
+}
+.btn-ghost .dot svg {
+  color: var(--color-bone);
+}
+.on-dark .btn-ghost .dot svg {
+  color: var(--color-ink);
+}
+.btn-ghost:hover {
+  border-color: var(--color-gold);
+}
+.btn-ghost:hover .dot {
+  background: var(--color-gold);
+}
+
+.dot {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex: none;
+  transition: background-color 0.3s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+}
+.dot svg {
+  transition: transform 0.5s var(--ease-out-expo);
+}
+a:hover > .dot svg,
+button:hover > .dot svg {
+  transform: rotate(-45deg);
+}
+
+/* ---------- Navigation ---------- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--color-bone);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+@supports (animation-timeline: scroll()) {
+  .nav {
+    animation: nav-line linear both;
+    animation-timeline: scroll();
+    animation-range: 0 120px;
+  }
+}
+@keyframes nav-line {
+  to {
+    border-bottom-color: var(--color-mist);
+  }
+}
+.nav-link {
+  position: relative;
+  font-size: 16px;
+  color: var(--color-smoke);
+  padding-block: 4px;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--color-ink);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.menu > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.menu > summary::-webkit-details-marker {
+  display: none;
+}
+.menu[open] .menu-icon-open {
+  display: none;
+}
+.menu:not([open]) .menu-icon-close {
+  display: none;
+}
+
+/* ---------- Section header ---------- */
+.sec-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-mist);
+  font-weight: 500;
+  font-size: 18px;
+}
+.sec-head .dot {
+  width: 24px;
+  height: 24px;
+  background: var(--color-ink);
+  color: var(--color-bone);
+}
+.on-dark .sec-head {
+  border-color: #3a362e;
+}
+.on-dark .sec-head .dot {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* ---------- Hero ---------- */
+.hero-line {
+  display: block;
+  overflow: clip;
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
+}
+.hero-line > span {
+  display: inline-block;
+  animation: rise 1.2s var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 100ms);
+}
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+.fade-in {
+  animation: fade 1.2s var(--ease-out-expo) both;
+  animation-delay: var(--d, 500ms);
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* ---------- Scroll reveal (progressive) ---------- */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+  /* Panels clip overflow, which makes them their own scrollers, so children bind to the panel's named timeline */
+  .vt {
+    view-timeline: --panel block;
+  }
+  .parallax {
+    animation: parallax linear both;
+    animation-timeline: --panel;
+    animation-range: cover;
+  }
+  .expand {
+    view-timeline: --panel block;
+    animation: expand linear both;
+    animation-timeline: --panel;
+    animation-range: entry 0% cover 45%;
+  }
+  .expand-pad {
+    animation: expand-pad linear both;
+    animation-timeline: --panel;
+    animation-range: entry 0% cover 45%;
+  }
+  .draw {
+    animation: draw linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 45%;
+  }
+  .draw-x {
+    animation: draw-x linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 45%;
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+@keyframes parallax {
+  from {
+    transform: scale(1.14) translateY(-5%);
+  }
+  to {
+    transform: scale(1.14) translateY(5%);
+  }
+}
+@keyframes expand {
+  from {
+    clip-path: inset(0 7% round 32px);
+  }
+  to {
+    clip-path: inset(0 0 round 20px);
+  }
+}
+@keyframes expand-pad {
+  from {
+    padding-inline: calc(7% + 24px);
+  }
+}
+@keyframes draw {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ---------- Marquee ---------- */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Group structure diagram ---------- */
+.node {
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-card);
+  background: var(--color-bone);
+  padding: 24px;
+}
+.node-parent {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+}
+.node-sub {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-bone);
+}
+.wire-v {
+  width: 1px;
+  background: var(--color-ink);
+  transform-origin: top;
+}
+.wire-h {
+  height: 1px;
+  background: var(--color-ink);
+  transform-origin: center;
+}
+
+/* ---------- Stats ---------- */
+.stat {
+  border-top: 1px solid #3a362e;
+  padding-top: 20px;
+}
+
+/* ---------- Carousel ---------- */
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(86vw, 440px);
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  padding-inline: var(--gutter);
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+@media (min-width: 1296px) {
+  .rail {
+    padding-inline: calc((100vw - var(--page)) / 2);
+    scroll-padding-inline: calc((100vw - var(--page)) / 2);
+  }
+}
+.rail > * {
+  scroll-snap-align: start;
+}
+.card-img {
+  position: relative;
+  aspect-ratio: 4 / 3.4;
+  border-radius: var(--radius-card);
+  background: var(--color-ash);
+  overflow: hidden;
+}
+.card-img img {
+  transition: transform 1.2s var(--ease-out-expo);
+}
+.card:hover .card-img img {
+  transform: scale(1.05) rotate(-1deg);
+}
+.badge {
+  display: inline-block;
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-badge);
+  padding: 4px 10px;
+  font-size: 14px;
+  color: var(--color-smoke);
+}
+
+/* ---------- Rows (recognition, leadership) ---------- */
+.row {
+  position: relative;
+  border-top: 1px solid var(--color-mist);
+  transition: background-color 0.4s var(--ease-out-expo);
+}
+.row::before {
+  content: "";
+  position: absolute;
+  inset: -1px 0 auto 0;
+  height: 1px;
+  background: var(--color-ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.row:hover::before {
+  transform: scaleX(1);
+}
+
+/* ---------- Pillars ---------- */
+.pillar {
+  border-left: 1px solid var(--color-mist);
+  padding: 8px 24px 0;
+}
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
