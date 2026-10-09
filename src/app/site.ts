@@ -1,5 +1,5 @@
-// Public origin, baked in at build time. Set SITE_URL to the live domain before deploying.
-export const SITE = (process.env.SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+// Public origin, baked in at build time. SITE_URL overrides it (e.g. for a staging domain).
+export const SITE = (process.env.SITE_URL || "https://ocih.group").replace(/\/$/, "");
 export const NAME = "OC International Holding Sdn. Bhd.";
 export const TITLE = "OC International Holding — Parent company of OC Global Technology";
 export const DESCRIPTION =

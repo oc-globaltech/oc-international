@@ -174,10 +174,15 @@ const jsonLd = {
       "@id": `${SITE}/#organization`,
       name: NAME,
       legalName: NAME,
-      alternateName: ["OC International", "OC International Holding"],
+      alternateName: ["OC International", "OC International Holding", "OC International Holdings", "OCIH"],
       url: SITE,
-      logo: `${SITE}/images/ocih-logo.svg`,
+      logo: { "@type": "ImageObject", url: `${SITE}/images/ocih-logo.png`, width: 816, height: 498 },
+      image: `${SITE}/opengraph-image`,
       description: DESCRIPTION,
+      email: "info@ocglobaltech.com",
+      telephone: "+6072831973",
+      contactPoint: { "@type": "ContactPoint", contactType: "customer service", telephone: "+6072831973", email: "info@ocglobaltech.com", areaServed: "MY", availableLanguage: ["en", "ms"] },
+      areaServed: "MY",
       subOrganization: { "@id": `${OCGT}/#organization` },
     },
     {
@@ -210,6 +215,7 @@ const jsonLd = {
       "@id": `${SITE}/#website`,
       url: SITE,
       name: "OC International",
+      alternateName: ["OC International Holding", "OCIH"],
       description: DESCRIPTION,
       inLanguage: "en",
       publisher: { "@id": `${SITE}/#organization` },
@@ -306,7 +312,7 @@ export default function Home() {
           <div className="mt-[clamp(48px,6vw,88px)] grid gap-12 md:grid-cols-12">
             <div className="fade-in md:col-span-6" style={{ "--d": "450ms" } as React.CSSProperties}>
               <p className="t-body max-w-[52ch] text-[clamp(18px,1.5vw,21px)]">
-                OC International is the parent company of a growing group of businesses. Its first group company is OC Global Technology Sdn. Bhd., the Malaysian technology company powering digital
+                OC International Holding Sdn. Bhd. is the parent company of a growing group of businesses. Its first group company is OC Global Technology Sdn. Bhd., the Malaysian technology company powering digital
                 growth through conversation, commerce and community platforms.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
